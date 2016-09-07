@@ -10,11 +10,11 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class ApiClient {
 
-    public static final String API_ROOT = "http://apisvc.tutor.hashlearn.com/";
+    public static final String API_ROOT = "http://ec2-54-169-45-113.ap-southeast-1.compute.amazonaws.com/";
 
     private static volatile ApiClient instance;
 
-    private NetworkService mNetworkService;
+    private StudentNetworkService mStudentNetworkService;
 
     private ApiClient() {
         init();
@@ -39,12 +39,12 @@ public class ApiClient {
                 .addConverterFactory(GsonConverterFactory.create())
                 .client(new OkHttpClient())
                 .build();
-        mNetworkService = retrofit.create(NetworkService.class);
+        mStudentNetworkService = retrofit.create(StudentNetworkService.class);
     }
 
-    public NetworkService getNetworkService() {
+    public StudentNetworkService getStudentNetworkService() {
 
-        return mNetworkService;
+        return mStudentNetworkService;
 
     }
 

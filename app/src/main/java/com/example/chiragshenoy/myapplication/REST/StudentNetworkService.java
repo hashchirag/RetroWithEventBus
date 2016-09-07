@@ -12,7 +12,7 @@ import retrofit2.http.Query;
  * Created by chiragshenoy on 03/09/16.
  */
 
-public interface NetworkService {
+public interface StudentNetworkService {
     @GET("/v2/api/tutor_corner/subject_chapter_list/")
     Call<List<Chapter>> listChapters(@Query("pk") String pk);
 }

@@ -1,5 +1,9 @@
 package com.example.chiragshenoy.myapplication.Events;
 
+import android.content.Context;
+import android.util.Log;
+
+import com.example.chiragshenoy.myapplication.Bus.BusProvider;
 import com.example.chiragshenoy.myapplication.Models.Chapter;
 
 import java.util.List;
@@ -19,9 +23,12 @@ public class LoadChaptersEvent extends BaseNetworkEvent {
     }
 
     public static class OnLoadingStart extends OnStart<String> {
-        public OnLoadingStart(String s) {
-            super(s);
+
+        // Constructor
+        public OnLoadingStart(String s, Context c) {
+            super(s, c);
         }
+
     }
 
     public static class OnLoadingError extends OnFailed {
@@ -29,5 +36,4 @@ public class LoadChaptersEvent extends BaseNetworkEvent {
             super(errorMessage, code);
         }
     }
-
 }

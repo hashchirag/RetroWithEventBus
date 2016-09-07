@@ -3,7 +3,9 @@ package com.example.chiragshenoy.myapplication.REST;
 import android.util.Log;
 
 import com.example.chiragshenoy.myapplication.Events.LoadChaptersEvent;
+import com.example.chiragshenoy.myapplication.Events.NoInternetEvent;
 import com.example.chiragshenoy.myapplication.Models.Chapter;
+import com.example.chiragshenoy.myapplication.NetworkUtil;
 import com.example.chiragshenoy.myapplication.REST.ApiClient;
 
 import org.greenrobot.eventbus.EventBus;
@@ -35,8 +37,9 @@ public class ApiRequestHandler {
 
     @Subscribe
     public void onLoadingStart(LoadChaptersEvent.OnLoadingStart onLoadingStart) {
-        Log.e("Entered", "Yea");
-        mApiClient.getNetworkService()
+        Log.e("On Loading Start", "Yes");
+
+        mApiClient.getStudentNetworkService()
                 .listChapters(onLoadingStart.getRequest())
                 .enqueue(new Callback<List<Chapter>>() {
 
@@ -44,6 +47,7 @@ public class ApiRequestHandler {
                     public void onResponse(Call<List<Chapter>> call, Response<List<Chapter>> response) {
                         if (response.isSuccessful()) {
                             mBus.post(new LoadChaptersEvent.OnLoaded(response.body()));
+
                         } else {
                             int statusCode = response.code();
                             ResponseBody errorBody = response.errorBody();
@@ -65,4 +69,5 @@ public class ApiRequestHandler {
                     }
                 });
     }
+
 }

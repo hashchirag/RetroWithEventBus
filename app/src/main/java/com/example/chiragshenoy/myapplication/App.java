@@ -4,6 +4,7 @@ import android.app.Application;
 
 import com.example.chiragshenoy.myapplication.Bus.BusProvider;
 import com.example.chiragshenoy.myapplication.REST.ApiRequestHandler;
+import com.example.chiragshenoy.myapplication.UI.BaseActivity;
 
 import org.greenrobot.eventbus.EventBus;
 
@@ -21,6 +22,7 @@ public class App extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
+        //Bind the bus and ApiRequest Handler
         mApiRequestHandler = new ApiRequestHandler(mBus);
         mBus.register(mApiRequestHandler);
     }

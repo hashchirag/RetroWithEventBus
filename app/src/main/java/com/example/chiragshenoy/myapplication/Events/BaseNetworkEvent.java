@@ -1,5 +1,11 @@
 package com.example.chiragshenoy.myapplication.Events;
 
+import android.content.Context;
+
+import com.example.chiragshenoy.myapplication.Bus.BusProvider;
+import com.example.chiragshenoy.myapplication.NetworkUtil;
+import com.example.chiragshenoy.myapplication.ProgressDialogHandler;
+
 /**
  * Created by chiragshenoy on 03/09/16.
  */
@@ -12,13 +18,26 @@ public class BaseNetworkEvent {
 
     protected static class OnStart<Rq> {
         private Rq mRequest;
+        private Context mContext;
 
-        public OnStart(Rq request) {
+        public OnStart(Rq request, Context context) {
+
+            if (!NetworkUtil.getConnectivityStatusString(context)) {
+                BusProvider.bus().post(new NoInternetEvent(true));
+                return;
+            }
+
             mRequest = request;
+            mContext = context;
+            ProgressDialogHandler.initProgressDialog(mContext);
         }
 
         public Rq getRequest() {
             return mRequest;
+        }
+
+        public Context getContext() {
+            return mContext;
         }
     }
 
@@ -28,12 +47,12 @@ public class BaseNetworkEvent {
 
         public OnDone(Rs response) {
             mResponse = response;
+            ProgressDialogHandler.dismissProgressDialog();
         }
 
         public Rs getResponse() {
             return mResponse;
         }
-
     }
 
     protected static class OnFailed {
@@ -44,6 +63,7 @@ public class BaseNetworkEvent {
         public OnFailed(String errorMessage, int code) {
             mErrorMessage = errorMessage;
             mCode = code;
+            ProgressDialogHandler.dismissProgressDialog();
         }
 
         public String getErrorMessage() {
@@ -55,5 +75,4 @@ public class BaseNetworkEvent {
         }
 
     }
-
 }
