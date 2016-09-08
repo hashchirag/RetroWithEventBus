@@ -3,8 +3,10 @@ package com.example.chiragshenoy.myapplication.REST;
 import android.util.Log;
 
 import com.example.chiragshenoy.myapplication.Events.LoadChaptersEvent;
+import com.example.chiragshenoy.myapplication.Events.LoadPromoCodeEvent;
 import com.example.chiragshenoy.myapplication.Events.LoadTutorStatusEvent;
 import com.example.chiragshenoy.myapplication.Events.NoInternetEvent;
+import com.example.chiragshenoy.myapplication.Models.BaseModel;
 import com.example.chiragshenoy.myapplication.Models.Chapter;
 import com.example.chiragshenoy.myapplication.Models.Tutor;
 import com.example.chiragshenoy.myapplication.NetworkUtil;
@@ -14,6 +16,7 @@ import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.List;
 
 import okhttp3.ResponseBody;
@@ -104,5 +107,47 @@ public class ApiRequestHandler {
         });
 
     }
+
+
+    @Subscribe
+    public void onLoadingStartOfPromoCodeEvent(LoadPromoCodeEvent.OnLoadingStart onLoadingStart) {
+        Log.e("On Loading Start ", "of PromoCode");
+        String s = (String) onLoadingStart.getRequest().get("userid");
+        String c = (String) onLoadingStart.getRequest().get("code");
+
+        Log.e("On Loading start", s);
+        Log.e("On Loading start", c);
+
+        mApiClient.getStudentNetworkService().getPromoResponse(s, c).enqueue(new Callback<BaseModel>() {
+            @Override
+            public void onResponse(Call<BaseModel> call, Response<BaseModel> response) {
+                if (response.isSuccessful()) {
+                    Log.e("PROMO", "success");
+                    mBus.post(new LoadPromoCodeEvent.OnLoaded(response.body()));
+                } else {
+                    int statusCode = response.code();
+                    Log.e("Error code", "" + statusCode);
+                    ResponseBody errorBody = response.errorBody();
+                    try {
+                        Log.e("Error body", response.errorBody().string());
+                        mBus.post(new LoadPromoCodeEvent.OnLoadingError(errorBody.string(), statusCode));
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<BaseModel> call, Throwable error) {
+                if (error != null && error.getMessage() != null) {
+                    mBus.post(new LoadTutorStatusEvent.OnLoadingError(error.getMessage(), -1));
+                } else {
+                    mBus.post(LoadTutorStatusEvent.FAILED);
+                }
+            }
+        });
+
+    }
+
 
 }

@@ -9,11 +9,14 @@ import android.widget.Toast;
 
 import com.example.chiragshenoy.myapplication.Bus.BusProvider;
 import com.example.chiragshenoy.myapplication.Events.LoadChaptersEvent;
+import com.example.chiragshenoy.myapplication.Events.LoadPromoCodeEvent;
 import com.example.chiragshenoy.myapplication.Events.LoadTutorStatusEvent;
 import com.example.chiragshenoy.myapplication.Events.NoInternetEvent;
 import com.example.chiragshenoy.myapplication.R;
 
 import org.greenrobot.eventbus.Subscribe;
+
+import java.util.HashMap;
 
 public class MainActivity extends BaseActivity {
 
@@ -25,11 +28,19 @@ public class MainActivity extends BaseActivity {
 
         // These calls do not post No Internet Event. Need to Figure out why.
         // It works only inside anonymous functions like below ?
-        BusProvider.bus().post(new LoadChaptersEvent.OnLoadingStart("10", MainActivity.this));
-        BusProvider.bus().post(new LoadTutorStatusEvent.OnLoadingStart("10206842460954809", MainActivity.this));
+//        BusProvider.bus().post(new LoadChaptersEvent.OnLoadingStart("10", MainActivity.this));
+//        BusProvider.bus().post(new LoadTutorStatusEvent.OnLoadingStart("10206842460954809", MainActivity.this));
 
 
-        TextView tv = (TextView) findViewById(R.id.tv);
+        String studentId = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InN0dWRlbnQ3MjY3NjE5MjgiLCJ1c2VyX2lkIjoyOTgzLCJyb2xlIjowLCJleHAiOjE1NTk3Mjg1ODAsIm9yaWdfaWF0IjoxNDczMzI4NTgwLCJ0eXBlIjoic3R1ZGVudCIsImVtYWlsIjoia2F1c3RodWJAaGFzaGxlYXJuLmNvbSJ9.5SHaSRkTx_K5T1-wX2E1kgyhe1ZgdJuK0hcbEZWiwa8";
+        String promocode = "hxxj8890";
+
+        HashMap<String, String> h = new HashMap<>();
+        h.put("userid", studentId);
+        h.put("code", promocode);
+        BusProvider.bus().post(new LoadPromoCodeEvent.OnLoadingStart(h, MainActivity.this));
+
+//        TextView tv = (TextView) findViewById(R.id.tv);
 //        final Handler handler = new Handler();
 //        handler.postDelayed(new Runnable() {
 //            @Override
@@ -73,6 +84,16 @@ public class MainActivity extends BaseActivity {
     @Subscribe
     public void onTutorStatusLoadFailed(LoadTutorStatusEvent.OnLoadingError onLoadingError) {
         Log.e("Onloading error", "Tutor");
+    }
+
+    @Subscribe
+    public void onPromoCodeLoaded(LoadPromoCodeEvent.OnLoaded onLoaded) {
+        Log.e("OncollegesLoaded called", onLoaded.getResponse().getStatus());
+    }
+
+    @Subscribe
+    public void onPromoCodeLoadFailed(LoadPromoCodeEvent.OnLoadingError onLoadingError) {
+        Log.e("Onloading error", "Promo");
     }
 
 }

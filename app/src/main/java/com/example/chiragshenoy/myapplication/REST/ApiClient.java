@@ -10,7 +10,13 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class ApiClient {
 
+
+    // For the example get requests
     public static final String API_ROOT = "http://ec2-54-169-45-113.ap-southeast-1.compute.amazonaws.com/";
+
+    // For the example post requests
+//    public static final String API_ROOT = "http://staging-now.hashlearn.com/";
+
 
     private static volatile ApiClient instance;
 
