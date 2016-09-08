@@ -23,8 +23,6 @@ public class LoadChaptersEvent extends BaseNetworkEvent {
     }
 
     public static class OnLoadingStart extends OnStart<String> {
-
-        // Constructor
         public OnLoadingStart(String s, Context c) {
             super(s, c);
         }

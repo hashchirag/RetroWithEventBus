@@ -1,6 +1,7 @@
 package com.example.chiragshenoy.myapplication.REST;
 
 import com.example.chiragshenoy.myapplication.Models.Chapter;
+import com.example.chiragshenoy.myapplication.Models.Tutor;
 
 import java.util.List;
 
@@ -15,4 +16,8 @@ import retrofit2.http.Query;
 public interface StudentNetworkService {
     @GET("/v2/api/tutor_corner/subject_chapter_list/")
     Call<List<Chapter>> listChapters(@Query("pk") String pk);
+
+    @GET("/v2/api/tutor_corner/get_tutor_status/")
+    Call<Tutor> getTutorStatus(@Query("uid") String pk);
+
 }

@@ -3,8 +3,10 @@ package com.example.chiragshenoy.myapplication.REST;
 import android.util.Log;
 
 import com.example.chiragshenoy.myapplication.Events.LoadChaptersEvent;
+import com.example.chiragshenoy.myapplication.Events.LoadTutorStatusEvent;
 import com.example.chiragshenoy.myapplication.Events.NoInternetEvent;
 import com.example.chiragshenoy.myapplication.Models.Chapter;
+import com.example.chiragshenoy.myapplication.Models.Tutor;
 import com.example.chiragshenoy.myapplication.NetworkUtil;
 import com.example.chiragshenoy.myapplication.REST.ApiClient;
 
@@ -37,7 +39,7 @@ public class ApiRequestHandler {
 
     @Subscribe
     public void onLoadingStart(LoadChaptersEvent.OnLoadingStart onLoadingStart) {
-        Log.e("On Loading Start", "Yes");
+        Log.e("On Loading Start ", "of LoadChapter");
 
         mApiClient.getStudentNetworkService()
                 .listChapters(onLoadingStart.getRequest())
@@ -68,6 +70,39 @@ public class ApiRequestHandler {
                         }
                     }
                 });
+    }
+
+
+    @Subscribe
+    public void onLoadingStartOfGetTutorStatus(LoadTutorStatusEvent.OnLoadingStart onLoadingStart) {
+        Log.e("On Loading Start ", "of Load Status");
+        mApiClient.getStudentNetworkService().getTutorStatus(onLoadingStart.getRequest()).enqueue(new Callback<Tutor>() {
+            @Override
+            public void onResponse(Call<Tutor> call, Response<Tutor> response) {
+                if (response.isSuccessful()) {
+                    mBus.post(new LoadTutorStatusEvent.OnLoaded(response.body()));
+
+                } else {
+                    int statusCode = response.code();
+                    ResponseBody errorBody = response.errorBody();
+                    try {
+                        mBus.post(new LoadTutorStatusEvent.OnLoadingError(errorBody.string(), statusCode));
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Tutor> call, Throwable error) {
+                if (error != null && error.getMessage() != null) {
+                    mBus.post(new LoadTutorStatusEvent.OnLoadingError(error.getMessage(), -1));
+                } else {
+                    mBus.post(LoadTutorStatusEvent.FAILED);
+                }
+            }
+        });
+
     }
 
 }
