@@ -4,9 +4,9 @@ import com.example.chiragshenoy.myapplication.Models.BaseModel;
 import com.example.chiragshenoy.myapplication.Models.Chapter;
 import com.example.chiragshenoy.myapplication.Models.Tutor;
 
-import java.util.HashMap;
 import java.util.List;
 
+import okhttp3.RequestBody;
 import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.Field;
@@ -29,4 +29,10 @@ public interface StudentNetworkService {
     @FormUrlEncoded
     @POST("/api/users/registerStudentWithCode/")
     Call<BaseModel> getPromoResponse(@Field("userid") String userid, @Field("code") String code);
+
+
+    //This is using generic object type.
+    @POST("/api/session/test/")
+    Call<BaseModel> getGenericPromoRequest(@Body RequestBody requestModel);
+
 }

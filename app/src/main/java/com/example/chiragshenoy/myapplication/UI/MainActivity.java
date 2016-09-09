@@ -1,10 +1,7 @@
 package com.example.chiragshenoy.myapplication.UI;
 
 import android.os.Bundle;
-import android.os.Handler;
 import android.util.Log;
-import android.view.View;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.chiragshenoy.myapplication.Bus.BusProvider;
@@ -12,11 +9,10 @@ import com.example.chiragshenoy.myapplication.Events.LoadChaptersEvent;
 import com.example.chiragshenoy.myapplication.Events.LoadPromoCodeEvent;
 import com.example.chiragshenoy.myapplication.Events.LoadTutorStatusEvent;
 import com.example.chiragshenoy.myapplication.Events.NoInternetEvent;
+import com.example.chiragshenoy.myapplication.Models.RequestModel;
 import com.example.chiragshenoy.myapplication.R;
 
 import org.greenrobot.eventbus.Subscribe;
-
-import java.util.HashMap;
 
 public class MainActivity extends BaseActivity {
 
@@ -35,10 +31,19 @@ public class MainActivity extends BaseActivity {
         String studentId = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InN0dWRlbnQ3MjY3NjE5MjgiLCJ1c2VyX2lkIjoyOTgzLCJyb2xlIjowLCJleHAiOjE1NTk3Mjg1ODAsIm9yaWdfaWF0IjoxNDczMzI4NTgwLCJ0eXBlIjoic3R1ZGVudCIsImVtYWlsIjoia2F1c3RodWJAaGFzaGxlYXJuLmNvbSJ9.5SHaSRkTx_K5T1-wX2E1kgyhe1ZgdJuK0hcbEZWiwa8";
         String promocode = "hxxj8890";
 
-        HashMap<String, String> h = new HashMap<>();
-        h.put("userid", studentId);
-        h.put("code", promocode);
-        BusProvider.bus().post(new LoadPromoCodeEvent.OnLoadingStart(h, MainActivity.this));
+//        HashMap<String, String> h = new HashMap<>();
+//        h.put("userid", studentId);
+//        h.put("code", promocode);
+
+        RequestModel<String> requestModel = new RequestModel<>();
+        requestModel.addParam("userid", studentId);
+        requestModel.addParam("code", promocode);
+
+//        TestModel t = new TestModel(studentId, promocode);
+//        Log.e("Pram", t.getCode());
+//        Log.e("Pram", t.getUserid());
+
+        BusProvider.bus().post(new LoadPromoCodeEvent.OnLoadingStart(requestModel, MainActivity.this));
 
 //        TextView tv = (TextView) findViewById(R.id.tv);
 //        final Handler handler = new Handler();

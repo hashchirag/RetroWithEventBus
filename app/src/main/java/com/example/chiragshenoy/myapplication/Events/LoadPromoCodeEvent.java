@@ -3,8 +3,7 @@ package com.example.chiragshenoy.myapplication.Events;
 import android.content.Context;
 
 import com.example.chiragshenoy.myapplication.Models.BaseModel;
-
-import java.util.HashMap;
+import com.example.chiragshenoy.myapplication.Models.RequestModel;
 
 /**
  * Created by chiragshenoy on 08/09/16.
@@ -20,9 +19,9 @@ public class LoadPromoCodeEvent extends BaseNetworkEvent {
         }
     }
 
-    public static class OnLoadingStart extends OnStart<HashMap> {
-        public OnLoadingStart(HashMap s, Context c) {
-            super(s, c);
+    public static class OnLoadingStart extends OnStart<RequestModel> {
+        public OnLoadingStart(RequestModel requestModel, Context c) {
+            super(requestModel, c);
         }
     }
 
