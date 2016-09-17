@@ -31,19 +31,18 @@ public class MainActivity extends BaseActivity {
         String studentId = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InN0dWRlbnQ3MjY3NjE5MjgiLCJ1c2VyX2lkIjoyOTgzLCJyb2xlIjowLCJleHAiOjE1NTk3Mjg1ODAsIm9yaWdfaWF0IjoxNDczMzI4NTgwLCJ0eXBlIjoic3R1ZGVudCIsImVtYWlsIjoia2F1c3RodWJAaGFzaGxlYXJuLmNvbSJ9.5SHaSRkTx_K5T1-wX2E1kgyhe1ZgdJuK0hcbEZWiwa8";
         String promocode = "hxxj8890";
 
-//        HashMap<String, String> h = new HashMap<>();
-//        h.put("userid", studentId);
-//        h.put("code", promocode);
-
         RequestModel<String> requestModel = new RequestModel<>();
         requestModel.addParam("userid", studentId);
         requestModel.addParam("code", promocode);
 
-//        TestModel t = new TestModel(studentId, promocode);
-//        Log.e("Pram", t.getCode());
-//        Log.e("Pram", t.getUserid());
 
-        BusProvider.bus().post(new LoadPromoCodeEvent.OnLoadingStart(requestModel, MainActivity.this));
+        if (isThereInternet())
+            BusProvider.bus().post(new LoadPromoCodeEvent.OnLoadingStart(requestModel, MainActivity.this));
+        else {
+            handleNoInternet();
+            // Handle no internet
+
+        }
 
 //        TextView tv = (TextView) findViewById(R.id.tv);
 //        final Handler handler = new Handler();
@@ -75,7 +74,6 @@ public class MainActivity extends BaseActivity {
         Log.e("Onloading error", "College");
     }
 
-    @Override
     public void noInternetEvent(NoInternetEvent noInternetEvent) {
         Log.e("No net", "YES");
     }
@@ -93,12 +91,16 @@ public class MainActivity extends BaseActivity {
 
     @Subscribe
     public void onPromoCodeLoaded(LoadPromoCodeEvent.OnLoaded onLoaded) {
-        Log.e("OncollegesLoaded called", onLoaded.getResponse().getStatus());
+        Log.e("On PromoCode Loaded ", onLoaded.getResponse().getStatus());
     }
 
     @Subscribe
     public void onPromoCodeLoadFailed(LoadPromoCodeEvent.OnLoadingError onLoadingError) {
         Log.e("Onloading error", "Promo");
+    }
+
+    public void handleNoInternet() {
+
     }
 
 }

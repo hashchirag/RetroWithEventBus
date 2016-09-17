@@ -19,6 +19,7 @@ import org.json.JSONObject;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import okhttp3.RequestBody;
 import okhttp3.ResponseBody;
@@ -40,6 +41,10 @@ public class ApiRequestHandler {
     public ApiRequestHandler(EventBus bus) {
         mBus = bus;
         mApiClient = ApiClient.getInstance();
+    }
+
+    private RequestBody createRequestBody(Map requestParams) {
+        return RequestBody.create(okhttp3.MediaType.parse("application/json; charset=utf-8"), (new JSONObject(requestParams)).toString());
     }
 
     @Subscribe
@@ -119,40 +124,41 @@ public class ApiRequestHandler {
         //FIXME
         // Some how pass the return type model and the Event.
 
-        RetrofitUtil.makeCall(mBus, mApiClient);
+//        RetrofitUtil.makeCall(mBus, mApiClient);
 
 //        RequestBody body = RequestBody.create(okhttp3.MediaType.parse("application/json; charset=utf-8"), (new JSONObject(onLoadingStart.getRequest().getRequestParams())).toString());
-//
-//        mApiClient.getStudentNetworkService().getGenericPromoRequest(body).enqueue(new Callback<BaseModel>() {
-//            @Override
-//            public void onResponse(Call<BaseModel> call, Response<BaseModel> response) {
-//                if (response.isSuccessful()) {
-//                    Log.e("PROMO", "success");
-//                    mBus.post(new LoadPromoCodeEvent.OnLoaded(response.body()));
-//                } else {
-//                    int statusCode = response.code();
-//                    Log.e("Error code", "" + statusCode);
-//                    ResponseBody errorBody = response.errorBody();
-//                    try {
-//                        Log.e("Error body", response.errorBody().string());
-//                        mBus.post(new LoadPromoCodeEvent.OnLoadingError(errorBody.string(), statusCode));
-//                    } catch (IOException e) {
-//                        e.printStackTrace();
-//                    }
-//                }
-//            }
-//
-//            @Override
-//            public void onFailure(Call<BaseModel> call, Throwable error) {
-//                if (error != null && error.getMessage() != null) {
-//                    mBus.post(new LoadTutorStatusEvent.OnLoadingError(error.getMessage(), -1));
-//                } else {
-//                    mBus.post(LoadTutorStatusEvent.FAILED);
-//                }
-//            }
-//        });
+
+        createRequestBody(onLoadingStart.getRequest().getRequestParams());
+
+
+        mApiClient.getStudentNetworkService().getGenericPromoRequest(createRequestBody(onLoadingStart.getRequest().getRequestParams())).enqueue(new Callback<BaseModel>() {
+            @Override
+            public void onResponse(Call<BaseModel> call, Response<BaseModel> response) {
+                if (response.isSuccessful()) {
+                    Log.e("PROMO", "success");
+                    mBus.post(new LoadPromoCodeEvent.OnLoaded(response.body()));
+                } else {
+                    int statusCode = response.code();
+                    Log.e("Error code", "" + statusCode);
+                    ResponseBody errorBody = response.errorBody();
+                    try {
+                        Log.e("Error body", response.errorBody().string());
+                        mBus.post(new LoadPromoCodeEvent.OnLoadingError(errorBody.string(), statusCode));
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<BaseModel> call, Throwable error) {
+                if (error != null && error.getMessage() != null) {
+                    mBus.post(new LoadTutorStatusEvent.OnLoadingError(error.getMessage(), -1));
+                } else {
+                    mBus.post(LoadTutorStatusEvent.FAILED);
+                }
+            }
+        });
 
     }
-
-
 }

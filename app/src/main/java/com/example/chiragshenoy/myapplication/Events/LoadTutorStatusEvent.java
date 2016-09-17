@@ -10,6 +10,9 @@ import com.example.chiragshenoy.myapplication.Models.Tutor;
 
 public class LoadTutorStatusEvent extends BaseNetworkEvent {
 
+    public static final String LOADING_TITLE = "LOADING Tutor Status";
+
+
     public static final LoadChaptersEvent.OnLoadingError FAILED = new LoadChaptersEvent.OnLoadingError(UNHANDLED_MSG, UNHANDLED_CODE);
 
     public static class OnLoaded extends OnDone<Tutor> {
@@ -20,7 +23,7 @@ public class LoadTutorStatusEvent extends BaseNetworkEvent {
 
     public static class OnLoadingStart extends OnStart<String> {
         public OnLoadingStart(String s, Context c) {
-            super(s, c);
+            super(s, c, LOADING_TITLE);
         }
 
     }

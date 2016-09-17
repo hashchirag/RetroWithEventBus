@@ -11,10 +11,11 @@ public class ProgressDialogHandler {
 
     private static ProgressDialog pd;
 
-    public static void initProgressDialog(Context context) {
+    public static void initProgressDialog(Context context, String loadingMessage) {
 
         if (pd == null) {
             pd = new ProgressDialog(context);
+            pd.setTitle(loadingMessage);
             pd.setCancelable(false);
             if (!pd.isShowing()) {
                 pd.show();

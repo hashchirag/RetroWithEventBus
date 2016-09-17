@@ -13,6 +13,8 @@ public class LoadPromoCodeEvent extends BaseNetworkEvent {
 
     public static final LoadPromoCodeEvent.OnLoadingError FAILED = new LoadPromoCodeEvent.OnLoadingError(UNHANDLED_MSG, UNHANDLED_CODE);
 
+    public static final String LOADING_TITLE = "LOADING PROMOCODE";
+
     public static class OnLoaded extends OnDone<BaseModel> {
         public OnLoaded(BaseModel baseModel) {
             super(baseModel);
@@ -20,8 +22,8 @@ public class LoadPromoCodeEvent extends BaseNetworkEvent {
     }
 
     public static class OnLoadingStart extends OnStart<RequestModel> {
-        public OnLoadingStart(RequestModel requestModel, Context c) {
-            super(requestModel, c);
+        public OnLoadingStart(RequestModel requestModel, Context context) {
+            super(requestModel, context, LOADING_TITLE);
         }
     }
 

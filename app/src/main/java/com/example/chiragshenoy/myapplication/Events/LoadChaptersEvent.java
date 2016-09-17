@@ -14,6 +14,9 @@ import java.util.List;
 
 public class LoadChaptersEvent extends BaseNetworkEvent {
 
+    public static final String LOADING_TITLE = "LOADING CHAPTERS";
+
+
     public static final OnLoadingError FAILED = new OnLoadingError(UNHANDLED_MSG, UNHANDLED_CODE);
 
     public static class OnLoaded extends OnDone<List<Chapter>> {
@@ -24,7 +27,7 @@ public class LoadChaptersEvent extends BaseNetworkEvent {
 
     public static class OnLoadingStart extends OnStart<String> {
         public OnLoadingStart(String s, Context c) {
-            super(s, c);
+            super(s, c, LOADING_TITLE);
         }
 
     }

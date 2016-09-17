@@ -1,6 +1,7 @@
 package com.example.chiragshenoy.myapplication.Events;
 
 import android.content.Context;
+import android.util.Log;
 
 import com.example.chiragshenoy.myapplication.Bus.BusProvider;
 import com.example.chiragshenoy.myapplication.NetworkUtil;
@@ -20,16 +21,17 @@ public class BaseNetworkEvent {
         private Rq mRequest;
         private Context mContext;
 
-        public OnStart(Rq request, Context context) {
+        public OnStart(Rq request, Context context, String loadingMessage) {
 
-            if (!NetworkUtil.getConnectivityStatusString(context)) {
-                BusProvider.bus().post(new NoInternetEvent(true));
-                return;
-            }
+//            if (!NetworkUtil.getConnectivityStatusString(context)) {
+//                Log.e("No interet", "1");
+//                BusProvider.bus().post(new NoInternetEvent(true));
+//                return;
+//            }
 
             mRequest = request;
             mContext = context;
-            ProgressDialogHandler.initProgressDialog(mContext);
+            ProgressDialogHandler.initProgressDialog(mContext, loadingMessage);
         }
 
         public Rq getRequest() {
