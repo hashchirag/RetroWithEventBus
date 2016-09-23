@@ -1,5 +1,7 @@
 package com.example.chiragshenoy.myapplication.UI;
 
+import android.app.FragmentManager;
+import android.app.FragmentTransaction;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.Toast;
@@ -28,21 +30,21 @@ public class MainActivity extends BaseActivity {
 //        BusProvider.bus().post(new LoadTutorStatusEvent.OnLoadingStart("10206842460954809", MainActivity.this));
 
 
-        String studentId = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InN0dWRlbnQ3MjY3NjE5MjgiLCJ1c2VyX2lkIjoyOTgzLCJyb2xlIjowLCJleHAiOjE1NTk3Mjg1ODAsIm9yaWdfaWF0IjoxNDczMzI4NTgwLCJ0eXBlIjoic3R1ZGVudCIsImVtYWlsIjoia2F1c3RodWJAaGFzaGxlYXJuLmNvbSJ9.5SHaSRkTx_K5T1-wX2E1kgyhe1ZgdJuK0hcbEZWiwa8";
-        String promocode = "hxxj8890";
-
-        RequestModel<String> requestModel = new RequestModel<>();
-        requestModel.addParam("userid", studentId);
-        requestModel.addParam("code", promocode);
-
-
-        if (isThereInternet())
-            BusProvider.bus().post(new LoadPromoCodeEvent.OnLoadingStart(requestModel, MainActivity.this));
-        else {
-            handleNoInternet();
-            // Handle no internet
-
-        }
+//        String studentId = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InN0dWRlbnQ3MjY3NjE5MjgiLCJ1c2VyX2lkIjoyOTgzLCJyb2xlIjowLCJleHAiOjE1NTk3Mjg1ODAsIm9yaWdfaWF0IjoxNDczMzI4NTgwLCJ0eXBlIjoic3R1ZGVudCIsImVtYWlsIjoia2F1c3RodWJAaGFzaGxlYXJuLmNvbSJ9.5SHaSRkTx_K5T1-wX2E1kgyhe1ZgdJuK0hcbEZWiwa8";
+//        String promocode = "hxxj8890";
+//
+//        RequestModel<String> requestModel = new RequestModel<>();
+//        requestModel.addParam("userid", studentId);
+//        requestModel.addParam("code", promocode);
+//
+//
+//        if (isThereInternet())
+//            BusProvider.bus().post(new LoadPromoCodeEvent.OnLoadingStart(requestModel, MainActivity.this));
+//        else {
+//            handleNoInternet();
+//            // Handle no internet
+//
+//        }
 
 //        TextView tv = (TextView) findViewById(R.id.tv);
 //        final Handler handler = new Handler();
@@ -61,6 +63,13 @@ public class MainActivity extends BaseActivity {
 //
 //            }
 //        });
+
+
+        FragmentManager fm = getFragmentManager();
+        FragmentTransaction ft = fm.beginTransaction();
+        ft.add(R.id.container, new TestFragment());
+        ft.commit();
+
     }
 
     @Subscribe
